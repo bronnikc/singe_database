@@ -1,0 +1,14 @@
+[Unit]
+Description=Oracle databases daemon
+After=network.target
+
+[Service]
+Type=forking
+EnvironmentFile=/etc/sysconfig/env.{{oracledb.sid}}
+TimeoutSec={{ db_startup_timeout }}
+ExecStart={{ oracle_home }}/bin/dbstart {{ oracle_home }}
+ExecStop={{ oracle_home }}/bin/dbshut {{ oracle_home }}
+User={{oracledb.user}}
+
+[Install]
+WantedBy=multi-user.target

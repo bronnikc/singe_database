@@ -1,0 +1,13 @@
+responseFileVersion=/oracle/assistants/rspfmt_dbca_response_schema_v12.2.0
+gdbName={{oracledb.db_name}}.{{oracledb.db_domain}}
+sid={{oracledb.sid}}
+databaseConfigType=SI
+templateName={{oracledb.template_dir}}/{{oracledb.db_template}}
+sysPassword={{oracledb.db_pass}}
+systemPassword={{oracledb.db_pass}}
+storageType={{oracledb.db_storage_type}}
+characterSet=AL32UTF8
+nationalCharacterSet=AL16UTF16
+initParams={% for param in oracledb.instance_params -%}{{ param.name }}={{param.value}},{%- endfor %}
+--
+

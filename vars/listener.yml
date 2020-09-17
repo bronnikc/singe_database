@@ -1,0 +1,5 @@
+dblistener:
+  port: "1521"
+  protocol: "TCP"
+  name: "listener"
+  rsp_template: listener.rsp 

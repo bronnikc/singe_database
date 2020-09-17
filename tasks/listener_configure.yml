@@ -1,0 +1,18 @@
+    - name: add listener variables 
+      include_vars: listener.yml
+    - name: Copy listener rspfile
+      template:
+        src: '{{dblistener.rsp_template}}.j2'
+        dest: '/tmp/{{dblistener.rsp_template}}'
+        owner: '{{ oracledb.user }}'
+        group: '{{ oracledb.group }}'  
+      become: true  
+    - name: call netca
+      become_user: '{{ oracledb.user }}'
+      become: true
+      shell:
+        cmd:  'bin/netca -silent  -responseFile /tmp/{{dblistener.rsp_template}}'
+        chdir: '{{ oracle_home }}'
+      register: listener_log
+    - name: netca output
+      debug: var=listener_log 

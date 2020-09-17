@@ -1,0 +1,72 @@
+---
+# tasks file for oracle.oracle_single_database
+- name: check existing  db 
+  block:
+   - shell:
+         cmd:   'cat /etc/oratab | grep -i {{oracledb.db_name}}: | wc -l'   
+         removes: '/etc/oratab' 
+     register: oratab
+   - fail:
+       msg: "ORACLE_SID={{ oracledb.sid }} already exists  !!! Please change ORACLE_SID"
+     when:  "('skipped'  in   oratab.stdout) or
+               ( oratab.stdout|int != 0 )"  
+- name:   check listener exists {{oracledb.db_name}}
+  block:
+    - stat:
+          path="{{oracle_home}}/network/admin/listener.ora"
+      register: listener_config
+    - name: Configure Listener
+      include_tasks: listener_configure.yml
+      when:  not  listener_config.stat.exists
+- name: install db 
+  block:
+    - name: Copy rsp file for Oracle
+      template:
+        src: '{{ item.tmpl }}.j2'
+        dest: '{{ item.fl }}'
+        owner: '{{ oracledb.user }}'
+        group: '{{ oracledb.group }}'
+      loop:
+        - { tmpl:  '{{oracledb.rsp_template}}' , fl: '{{oracledb.template_dir}}/db.rsp'                                }
+        - { tmpl: '{{oracledb.db_template}}' ,   fl: '{{oracledb.template_dir}}/{{oracledb.db_template}}' }
+      tags: rsp   
+    - name: Add ORACLE RDBMS {{oracledb.db_name}}
+      become_user: '{{ oracledb.user }}'
+      become: true
+      shell:
+        cmd:  'bin/dbca -silent -createDatabase -responseFile /tmp/{{oracledb.rsp_file}} -ignorePrereqFailure -ignorePreReqs'
+        chdir: '{{ oracle_home }}'
+      register: db_install
+      failed_when: "(db_install.stdout_lines is undefined) or
+                            ('100% complete' not   in db_install.stdout_lines)"
+      changed_when: db_install.rc == 0
+    - debug: var=db_install
+- name: Enable autostart oracle service
+  block:
+    - name: Change oratab
+      lineinfile:
+       dest: /etc/oratab
+       state: present
+       regexp: "{{ oracledb.sid }}"  
+       line: '{{oracledb.sid}}:{{oracle_home}}:Y'
+      become: True  
+    - name: Create environment variables
+      template:
+          src: env.oracledb.sysconfig.j2
+          dest: "/etc/sysconfig/env.{{oracledb.sid}}"
+      become: True
+  
+    - name: Create systemd Oracle databases service
+      template:
+          src: oracledb.systemd.j2
+          dest: "/etc/systemd/system/{{oracledb.sid}}.service"
+      become: True
+  
+    - name: Start Oracle database
+      service:
+          name: "{{oracledb.sid}}"
+          state: started
+          enabled: True
+      become: True
+  tags: service_up
+
