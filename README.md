@@ -28,9 +28,9 @@ https://git.apps.okd.dcteam.local/oracle-ansible/install_oracle_home
 
 Role Variables
 --------------
-- `db_name` - database unque name
+- `db_name` - database unque name, default `orcl`
 -  `oracle_dhome` - database home from which to run dbca
-- `db_archive_mode` - database archive mode: archivelog or no_archivelog
+- `db_archive_mode` - database archive mode: archivelog or no_archivelog, default `no_archivelog`
 - `sys_password` - password for all database users
 
  #### **Password for administrative accounts**
