@@ -17,7 +17,7 @@ instance_params:
   - `FILE_DEST` - /u01/app/oracle/oradata
 
 - If LISTENER doesn't exists, role add listener configuration 
-- Role add database to systemctl for automatic startup and stop database
+- Role add database to systemctl for automatic startup and stop database with service name `SID` of database
 
 Requirements
 ------------
