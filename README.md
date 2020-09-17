@@ -1,9 +1,9 @@
-Role Name
+Summary
 =========
 
-Role create single instance database on file system with next changed parameters:
+- Role create single instance database on file system with next changed parameters:
 
-This parameters can be changed at vars/main.yml
+  This parameters can be changed at vars/main.yml
 ```yaml
 instance_params:
      - {name: "sga_target", value: "1100MB" }
@@ -12,9 +12,12 @@ instance_params:
      - {name: processes, value: 300}
      - {name: cursor_sharing, value: true}
 ```
-- `ORACLE_BASE` - /u01/app/oracle
-- `ORACLE_HOME` - /u01/app/oracle/product/12.2/dbhome
-- `FILE_DEST` - /u01/app/oracle/oradata
+  -  `ORACLE_BASE` - /u01/app/oracle
+  - `ORACLE_HOME` - /u01/app/oracle/product/12.2/dbhome
+  - `FILE_DEST` - /u01/app/oracle/oradata
+
+- If LISTENER doesn't exists, role add listener configuration 
+- Role add database to systemctl for automatic startup and stop database
 
 Requirements
 ------------
@@ -47,12 +50,14 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
+ansible-galaxy install git+https://git.apps.okd.dcteam.local/oracle-ansible/create_oracle_database.git
+```yml
     - hosts: servers
       roles:
-        -  role: oracle.oracle_single_database
+        -  role: create_oracle_database
            become: yes 
            db_name:  orcl
            oracle_dbhome: dbhome_1
            db_archive_mode: archivelog
            sys_password: oracle4u
-
+```
