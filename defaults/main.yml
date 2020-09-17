@@ -2,3 +2,4 @@
 oracle_version:   "12.2"
 oracle_dbhome:  dbhome_1
 db_startup_timeout: 300
+sys_password: oracle4u

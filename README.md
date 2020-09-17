@@ -1,7 +1,18 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+Role create single instance database on file system with next changed parameters:
+```yaml
+instance_params:
+     - {name: "sga_target", value: "1100MB" }
+     - {name: "sga_max_size", value: "1100MB"} 
+     - {name: "pga_aggregate_target", value: "200MB"}
+     - {name: processes, value: 300}
+     - {name: cursor_sharing, value: force}
+```
+- `ORACLE_BASE` - /u01/app/oracle
+- `ORACLE_HOME` - /u01/app/oracle/product/12.2/dbhome
+- `FILE_DEST` - /u01/app/oracle/oradata
 
 Requirements
 ------------
@@ -25,7 +36,12 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+        -  role: oracle.oracle_single_database
+           become: yes 
+           db_name:  orcl
+           oracle_dbhome: dbhome_1
+           db_archive_mode: archivelog | no_archivelog
+           sys_password: oracle4u
 
 License
 -------
