@@ -9,7 +9,7 @@ oracledb:
   db_name: "{{db_name| default('orcl')}}"
   sid: "{{sid| default('orcl')}}"
   db_domain: dcteam.local
-  db_pass: "{{sys_password} | default('qwertASDF')}"
+  db_pass: "{{sys_password} | default('SysPassDcteam2020')}"
   db_storage_type: 'FS'
   rsp_template: 'dbca.rsp.{{ oracle_version }}'
   db_archive_mode: "{{db_archive_mode | default('no_archivelog')}}"
@@ -21,4 +21,4 @@ oracledb:
      - {name: "sga_max_size", value: "1100MB"} 
      - {name: "pga_aggregate_target", value: "200MB"}
      - {name: processes, value: 300}
-     -  {name: cursor_sharing, value: force}
+     -  {name: cursor_sharing, value: true}
