@@ -9,7 +9,7 @@ oracledb:
   db_name: "{{db_name| default('orcl')}}"
   sid: "{{sid| default('orcl')}}"
   db_domain: dcteam.local
-  db_pass: LAjIZllxpj18
+  db_pass: "{{sys_password} | default('qwertASDF')}"
   db_storage_type: 'FS'
   rsp_template: 'dbca.rsp.{{ oracle_version }}'
   db_archive_mode: "{{db_archive_mode | default('no_archivelog')}}"
