@@ -50,21 +50,20 @@
        regexp: "{{ oracledb.sid }}"  
        line: '{{oracledb.sid}}:{{oracle_home}}:Y'
       become: True  
-    - name: Create environment variables
-      template:
-          src: env.oracledb.sysconfig.j2
-          dest: "/etc/sysconfig/env.{{oracledb.sid}}"
-      become: True
-  
+  #  - name: Create environment variables
+  #    template:
+  #        src: env.oracledb.sysconfig.j2
+  #        dest: "/etc/sysconfig/env.{{oracledb.sid}}"
+  #    become: True
     - name: Create systemd Oracle databases service
       template:
           src: oracledb.systemd.j2
-          dest: "/etc/systemd/system/{{oracledb.sid}}.service"
+          dest: "/usr/lib/systemd/system/oracle-database.service"
       become: True
   
     - name: Start Oracle database
       service:
-          name: "{{oracledb.sid}}"
+          name: "oracle-database.service"
           state: started
           enabled: True
       become: True

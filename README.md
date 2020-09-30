@@ -10,7 +10,7 @@ instance_params:
      - {name: "sga_max_size", value: "1100MB"} 
      - {name: "pga_aggregate_target", value: "200MB"}
      - {name: processes, value: 300}
-     - {name: cursor_sharing, value: true}
+     - {name: cursor_sharing, value: force}
 ```
   -  `ORACLE_BASE` - /u01/app/oracle
   - `ORACLE_HOME` - /u01/app/oracle/product/12.2/dbhome
@@ -29,7 +29,7 @@ https://git.apps.okd.dcteam.local/oracle-ansible/install_oracle_home
 Role Variables
 --------------
 - `db_name` - database unque name, default `orcl`
--  `oracle_dhome` - database home from which to run dbca
+-  `oracle_dbhome` - database home from which to run dbca
 - `db_archive_mode` - database archive mode: archivelog or no_archivelog, default `no_archivelog`
 - `sys_password` - password for all database users
 
