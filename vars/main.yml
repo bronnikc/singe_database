@@ -13,8 +13,8 @@ oracledb:
   db_storage_type: 'FS'
   rsp_template: 'dbca.rsp.{{ oracle_version }}'
   db_archive_mode: "{{db_archive_mode | default('no_archivelog')}}"
-  datafile_destination: "{{datafile_destination}}"
-  recovery_destination: "{{recovery_destination}}"
+  datafile_destination: "{{datafile_destination | default('default',true)}}"
+  recovery_destination: "{{recovery_destination | default('default'),true}}"
   rsp_file: db.rsp
   db_template: db_fs.dbc
   template_dir: /tmp
