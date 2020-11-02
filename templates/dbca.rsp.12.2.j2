@@ -12,8 +12,8 @@ templateName={{oracledb.template_dir}}/{{oracledb.db_template}}
 sysPassword={{oracledb.db_pass}}
 systemPassword={{oracledb.db_pass}}
 storageType={{oracledb.db_storage_type}}
-characterSet=AL32UTF8
-nationalCharacterSet=AL16UTF16
+characterSet={{oracledb.characterSet}}
+nationalCharacterSet={{oracledb.nationalCharacterSet}}
 initParams={% for param in oracledb.instance_params -%}{{ param.name }}={{param.value}},{%- endfor %}
 
 --
